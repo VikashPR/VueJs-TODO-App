@@ -1,15 +1,34 @@
 <template>
   <div>
-      <form>
-          <input type="text" name="title" placeholder="AddTodo">
+      <form @submit="addTodo">
+          <input type="text" v-model="title" name="title" placeholder="AddTodo">
           <input type="submit" class='btn' value="Submit">
       </form>
   </div>
 </template>
 
 <script>
+import {uuid} from "vue-uuid";
 export default {
-    name: 'AddTodo'
+    name: 'AddTodo',
+    data() {
+        return {
+            title: '',
+        }
+    },
+    methods: {
+        addTodo(e) {
+            e.preventDefault();
+            const newTodo = {
+                id: uuid.v4(),
+                title: this.title,
+                completed: false,
+            }
+            // *Send up to parent
+            this.$emit('add-Todo' , newTodo);
+            this.title = '';
+        }
+    }
 }
 </script>
 
